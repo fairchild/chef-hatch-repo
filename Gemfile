@@ -24,6 +24,7 @@ gem 'vagrant', '~> 1.0.5'
 
 # Vagrant Hostmaster for VM /etc/hosts management
 gem 'vagrant-hostmaster'
+gem 'vagrant-vbguest'
 
 # List Ubuntu EC2 AMIs from knife
 gem 'ubuntu_ami'

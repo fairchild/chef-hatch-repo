@@ -17,7 +17,42 @@ Setting up for development should *only* require the following:
 
     git clone <git_url>
     cd <repo-dir>
-    ./script/bootstrap
+    ./script/bootstrap  # this script will run bundle install and librarian install
+    vagrant up chef
+    
+Then open a webbrowser and vist the chef servrer web ui
+
+    open http://chef.vm:4040/ 
+  
+  1. login with default username=admin password=chefchef
+  2. Create a user for yourself, 
+  3. and then create a client for your user, 
+  4. and then download those credentials for use with knife
+  
+Run knife configure to seup a knife.rb confiuration file.  It is recomended to set on in the .chef of the <repo-dir>.
+  
+    knife configure
+    
+Before being able to run the knfie commands, you will need to place the client private pem file you created thru the webui in the .chef directory.  Here is an example of a working knife.rb
+
+    log_level                :info
+    log_location             STDOUT
+    node_name                ENV['USER']
+    client_key               "/Users/#{ENV['USER']}/code/chef-hatch-repo/.chef/#{ENV['USER']}.pem'
+    cookbook_path            '/Users/fairchild/code/chef-hatch-repo/cookbooks'
+    validation_client_name   'chef-validator'
+    validation_key           '/Users/fairchild/code/chef-hatch-repo/validation.pem'
+    chef_server_url          'https://chef.vm'
+    cache_type               'BasicFile'
+    cache_options( :path => '/Users/fairchild/code/chef-hatch-repo/.chef/checksums' )
+
+The fairchild.pem file is the privte key retrieved from the chef server webui for my user.  
+The validator.pem file is what is used when creating new clients
+
+Upload the cookbooks to the chef server
+
+    ./script/populate_chef_server
+    
 
 ### Refreshing/Updating Local Copy
 
